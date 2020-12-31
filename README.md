@@ -1,19 +1,8 @@
-# werk
+<p align="center">
+    <img src="https://github.com/sohaibalam67/Werk/blob/master/src/assets/icons/android-chrome-512x512.png" width="200">
+</p>
+<h1 align="center">Werk Pomodoro Timer</h1>
 
-## CLI Commands
-*   `npm install`: Installs dependencies
-
-*   `npm run dev`: Run a development, HMR server
-
-*   `npm run serve`: Run a production-like server
-
-*   `npm run build`: Production-ready build
-
-*   `npm run lint`: Pass TypeScript files using TSLint
-
-*   `npm run test`: Run Jest and Enzyme with
-    [`enzyme-adapter-preact-pure`](https://github.com/preactjs/enzyme-adapter-preact-pure) for
-    your tests
-
-
-For detailed explanation on how things work, checkout the [CLI Readme](https://github.com/developit/preact-cli/blob/master/README.md).
+<p align="center">
+    Simple and lightweight pomodoro timer to kill procrastination and get things done. Use it and get back to werk!
+</p>
