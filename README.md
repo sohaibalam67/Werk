@@ -6,3 +6,5 @@
 <p align="center">
     Simple and lightweight pomodoro timer to kill procrastination and get things done. Use it and get back to werk!
 </p>
+
+<img alt="" src="https://sohaibalam67-github.herokuapp.com/readme/github?id=werk_pomodoro_timer" />
