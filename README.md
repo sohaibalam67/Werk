@@ -13,4 +13,11 @@
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/sohaibalam67/werk)
 ![GitHub last commit](https://img.shields.io/github/last-commit/sohaibalam67/werk)
 
+
+## Features
+- 25-5 (25 min work, 5 min rest) preset
+- start/pause anytime
+- reset the current session (work/break)
+- Really lightweight. Install as PWA.
+
 <img alt="" src="https://sohaibalam67-github.herokuapp.com/readme/github?id=werk_pomodoro_timer" />
