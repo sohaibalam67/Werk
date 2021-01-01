@@ -23,6 +23,7 @@ type State = {
     currentMachineState: string;
     currentTimerState: string;
     timerRotation: number;
+    totalWorkSessions: number;
 };
 
 type ActionType = {
@@ -66,7 +67,8 @@ const Home: FunctionalComponent = () => {
                     ...state,
                     currentCountdownTime: state.breakDuration,
                     currentTimerState: TimerStates.IDLE,
-                    currentMachineState: MachineStates.BREAK
+                    currentMachineState: MachineStates.BREAK,
+                    totalWorkSessions: state.totalWorkSessions + 1
                 };
 
             case "START":
@@ -104,14 +106,13 @@ const Home: FunctionalComponent = () => {
                 };
 
             case "RESET":
-                if (state.currentMachineState === MachineStates.WORK) {
-                    return reducer(state, {
-                        type: "SWITCH_TO_WORK"
-                    });
-                } else {
-                    return reducer(state, {
-                        type: "SWITCH_TO_BREAK"
-                    });
+                return {
+                    ...state,
+                    currentCountdownTime:
+                        state.currentMachineState === MachineStates.WORK
+                            ? state.sessionDuration
+                            : state.breakDuration,
+                    currentTimerState: TimerStates.IDLE
                 }
 
             default:
@@ -136,32 +137,43 @@ const Home: FunctionalComponent = () => {
         }
     };
 
+    const reset = (): void => {
+        dispatch({ type: "RESET" });
+    };
+
     return (
         <div class={style.home}>
             <div class={style.container}>
                 <Header />
+                <div class={style.statusLabel}>
+                    {state.currentMachineState === MachineStates.WORK
+                        ? "📌 WERK"
+                        : "💆🏻‍♀️ CHILL"}
+                </div>
                 <Timer
                     timerRotation={state.timerRotation}
                     currentCountdownTime={state.currentCountdownTime}
+                    isBreak={state.currentMachineState === MachineStates.BREAK}
                 />
-                <div class={style.statusLabel}>
-                    {state.currentMachineState === MachineStates.WORK
-                        ? "Get back to werk!"
-                        : "Take a break!"}
+                <div class={style.sessionCountLabel}>
+                    {`${state.totalWorkSessions} ${
+                        state.totalWorkSessions > 1 ? "sessions" : "session"
+                    } completed`}
                 </div>
-                <button onClick={startOrStop} class={style.startStopButton}>
-                    {state.currentTimerState === TimerStates.IDLE
-                        ? `START ${
-                              state.currentMachineState === MachineStates.WORK
-                                  ? "WORK"
-                                  : "BREAK"
-                          }`
-                        : `PAUSE ${
-                              state.currentMachineState === MachineStates.WORK
-                                  ? "WORK"
-                                  : "BREAK"
-                          }`}
-                </button>
+                <div class={style.buttonContainer}>
+                    <button
+                        onClick={startOrStop}
+                        class={style.startStopButton}
+                        autoFocus
+                    >
+                        {state.currentTimerState === TimerStates.IDLE
+                            ? "START"
+                            : "PAUSE"}
+                    </button>
+                    <button onClick={reset} class={style.resetButton} autoFocus>
+                        RESET
+                    </button>
+                </div>
             </div>
         </div>
     );

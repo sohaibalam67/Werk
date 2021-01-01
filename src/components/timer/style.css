@@ -18,6 +18,18 @@
     justify-content: center;
     min-width: 360px;
     min-height: 360px;
+    animation: entry 600ms ease-out;
+}
+
+@keyframes entry {
+    from {
+        transform: scale(1.5) rotate(30deg);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+    }
 }
 
 svg {

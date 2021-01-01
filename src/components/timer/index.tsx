@@ -6,12 +6,18 @@ import * as style from "./style.css";
 type TimerProps = {
     timerRotation: number;
     currentCountdownTime: number;
+    isBreak: boolean;
 };
 
 const Timer: FunctionalComponent<{
     timerRotation: number;
     currentCountdownTime: number;
-}> = ({ timerRotation = 0, currentCountdownTime = 0 }: TimerProps) => {
+    isBreak: boolean;
+}> = ({
+    timerRotation = 0,
+    currentCountdownTime = 0,
+    isBreak = false
+}: TimerProps) => {
     return (
         <div class={style.timerContainer}>
             <svg width="360" height="360">
@@ -38,7 +44,7 @@ const Timer: FunctionalComponent<{
                     y1="60"
                     x2="180"
                     y2="180"
-                    stroke="#EB3F6B"
+                    stroke={isBreak ? "#6ab04c" : "#EB3F6B"}
                     // eslint-disable-next-line react/no-unknown-property
                     stroke-width="3"
                     // eslint-disable-next-line react/no-unknown-property

@@ -19,21 +19,34 @@
 
 .statusLabel {
     font-weight: bolder;
-    font-size: 1.2rem;
-    margin-bottom: 22px;
+    font-size: 1rem;
+    margin: 12px auto;
 }
 
-.startStopButton {
+.sessionCountLabel {
+    font-size: 1.1rem;
+    margin-bottom: 42px;
+    color: #adb5bd;
+}
+
+.buttonContainer {
+    padding: 12px;
+    width: 80%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+button {
     border: 0px;
     padding: 18px 32px;
     border-radius: 6px;
+    width: 100%;
     outline: none;
     cursor: pointer;
     font-size: 0.8rem;
     font-weight: bold;
     letter-spacing: 0.5px;
-    background-color: #212529;
-    color: #fff;
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     -khtml-user-select: none;
@@ -42,13 +55,32 @@
     user-select: none;
     -webkit-tap-highlight-color: transparent;
     transition: 120ms ease-in-out;
-    box-shadow: 0px 0px 0px 0rem #ced4da;
+}
+
+.startStopButton {
+    background-color: #d5184e;
+    color: #fff;
+    box-shadow: 0px 0px 0px 0rem #ffdeeb;
+}
+
+.resetButton {
+    background-color: #dee2e6;
+    color: #212529;
+    box-shadow: 0px 0px 0px 0rem #f1f3f5;
 }
 
 .startStopButton:active {
-    background-color: #343a40;
+    background-color: #eb3f6b;
 }
 
 .startStopButton:focus {
-    box-shadow: 0px 0px 0px 0.2rem #ced4da;
+    box-shadow: 0px 0px 0px 0.2rem #ffdeeb;
+}
+
+.resetButton:active {
+    background-color: #e9ecef;
+}
+
+.resetButton:focus {
+    box-shadow: 0px 0px 0px 0.2rem #f1f3f5;
 }
