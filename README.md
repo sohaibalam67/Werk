@@ -20,4 +20,6 @@
 - reset the current session (work/break)
 - Really lightweight. Install as PWA.
 
+[Launch the app](https://werktimer.netlify.app/)
+
 <img alt="" src="https://sohaibalam67-github.herokuapp.com/readme/github?id=werk_pomodoro_timer" />
