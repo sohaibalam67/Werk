@@ -2,9 +2,6 @@
 declare namespace StyleCssNamespace {
     export interface IStyleCss {
         container: string;
-        home: string;
-        startStopButton: string;
-        statusLabel: string;
     }
 }
 

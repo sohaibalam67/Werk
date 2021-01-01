@@ -1,21 +1,38 @@
 import { FunctionalComponent, h } from "preact";
 import { useReducer } from "preact/hooks";
-import { secondsToClock } from "../../utils";
+import Timer from "../../components/timer";
+import Header from "../../components/header";
 import useInterval from "../../hooks/useInterval";
 
 import * as style from "./style.css";
 
-type ActionType = {
-    type: "start" | "pause" | "reset" | "decrement_second";
+const MachineStates = {
+    WORK: "WORK",
+    BREAK: "BREAK"
+};
+
+const TimerStates = {
+    IDLE: "IDLE",
+    TICK: "TICK"
 };
 
 type State = {
     sessionDuration: number;
     breakDuration: number;
     currentCountdownTime: number;
-    isPaused: boolean;
-    isBreak: boolean;
+    currentMachineState: string;
+    currentTimerState: string;
     timerRotation: number;
+};
+
+type ActionType = {
+    type:
+        | "START"
+        | "PAUSE"
+        | "RESET"
+        | "DECREMENT_SECOND"
+        | "SWITCH_TO_WORK"
+        | "SWITCH_TO_BREAK";
 };
 // Circle dots calculation
 // C = 2πr
@@ -25,41 +42,78 @@ const Home: FunctionalComponent = () => {
     const INITIAL_STATE = {
         sessionDuration: 25 * 60,
         breakDuration: 5 * 60,
-        currentCountdownTime: 1 * 60,
-        isPaused: false,
-        isBreak: false,
-        timerRotation: 0
+        currentCountdownTime: 25 * 60,
+        currentMachineState: MachineStates.WORK,
+        currentTimerState: TimerStates.IDLE,
+        timerRotation: 0,
+        totalWorkSessions: 0
     };
 
     const reducer = (state: State, action: ActionType): State => {
+        let currentCountdownTime;
+
         switch (action.type) {
-            case "start":
+            case "SWITCH_TO_WORK":
                 return {
                     ...state,
-                    isPaused: false
+                    currentCountdownTime: state.sessionDuration,
+                    currentTimerState: TimerStates.IDLE,
+                    currentMachineState: MachineStates.WORK
                 };
-            case "pause":
+
+            case "SWITCH_TO_BREAK":
                 return {
                     ...state,
-                    isPaused: true
+                    currentCountdownTime: state.breakDuration,
+                    currentTimerState: TimerStates.IDLE,
+                    currentMachineState: MachineStates.BREAK
                 };
-            case "decrement_second":
+
+            case "START":
                 return {
                     ...state,
-                    currentCountdownTime: Math.max(
-                        0,
-                        state.currentCountdownTime - 1
-                    ),
+                    currentTimerState: TimerStates.TICK
+                };
+            case "PAUSE":
+                return {
+                    ...state,
+                    currentTimerState: TimerStates.IDLE
+                };
+            case "DECREMENT_SECOND":
+                currentCountdownTime = Math.max(
+                    0,
+                    state.currentCountdownTime - 1
+                );
+
+                if (currentCountdownTime === 0) {
+                    if (state.currentMachineState === MachineStates.WORK) {
+                        return reducer(state, {
+                            type: "SWITCH_TO_BREAK"
+                        });
+                    } else {
+                        return reducer(state, {
+                            type: "SWITCH_TO_WORK"
+                        });
+                    }
+                }
+
+                return {
+                    ...state,
                     timerRotation: (state.timerRotation + 6) % 360,
-                    isPaused: state.currentCountdownTime - 1 === 0
+                    currentCountdownTime
                 };
-            case "reset":
-                return {
-                    ...state,
-                    currentCountdownTime: state.isBreak
-                        ? state.breakDuration
-                        : state.sessionDuration
-                };
+
+            case "RESET":
+                if (state.currentMachineState === MachineStates.WORK) {
+                    return reducer(state, {
+                        type: "SWITCH_TO_WORK"
+                    });
+                } else {
+                    return reducer(state, {
+                        type: "SWITCH_TO_BREAK"
+                    });
+                }
+
             default:
                 return { ...state };
         }
@@ -69,52 +123,45 @@ const Home: FunctionalComponent = () => {
 
     useInterval(
         (): void => {
-            dispatch({ type: "decrement_second" });
+            dispatch({ type: "DECREMENT_SECOND" });
         },
-        state.isPaused ? null : 1000
+        state.currentTimerState === TimerStates.TICK ? 1000 : null
     );
+
+    const startOrStop = (): void => {
+        if (state.currentTimerState === TimerStates.IDLE) {
+            dispatch({ type: "START" });
+        } else {
+            dispatch({ type: "PAUSE" });
+        }
+    };
 
     return (
         <div class={style.home}>
             <div class={style.container}>
-                <div class={style.timerContainer}>
-                    <svg width="360" height="360">
-                        <circle
-                            style={{
-                                transform: `rotate(${state.timerRotation}deg)`,
-                                transformOrigin: "center center",
-                                transition: "400ms"
-                            }}
-                            cx="180"
-                            cy="180"
-                            r="130"
-                            stroke="#565656"
-                            // eslint-disable-next-line react/no-unknown-property
-                            stroke-width="3"
-                            // eslint-disable-next-line react/no-unknown-property
-                            stroke-dasharray="0 13.6135"
-                            // eslint-disable-next-line react/no-unknown-property
-                            stroke-linecap="round"
-                            fill="transparent"
-                        />
-                        <line
-                            x1="180"
-                            y1="60"
-                            x2="180"
-                            y2="180"
-                            stroke="red"
-                            // eslint-disable-next-line react/no-unknown-property
-                            stroke-width="3"
-                            // eslint-disable-next-line react/no-unknown-property
-                            stroke-linecap="round"
-                        />
-                    </svg>
-                    <span class={style.time}>
-                        {secondsToClock(state.currentCountdownTime)}
-                    </span>
+                <Header />
+                <Timer
+                    timerRotation={state.timerRotation}
+                    currentCountdownTime={state.currentCountdownTime}
+                />
+                <div class={style.statusLabel}>
+                    {state.currentMachineState === MachineStates.WORK
+                        ? "Get back to werk!"
+                        : "Take a break!"}
                 </div>
-                <div class={style.statusLabel}>Werk!</div>
-                <button class={style.startStopButton}>START</button>
+                <button onClick={startOrStop} class={style.startStopButton}>
+                    {state.currentTimerState === TimerStates.IDLE
+                        ? `START ${
+                              state.currentMachineState === MachineStates.WORK
+                                  ? "WORK"
+                                  : "BREAK"
+                          }`
+                        : `PAUSE ${
+                              state.currentMachineState === MachineStates.WORK
+                                  ? "WORK"
+                                  : "BREAK"
+                          }`}
+                </button>
             </div>
         </div>
     );

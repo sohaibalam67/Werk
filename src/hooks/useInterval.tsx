@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "preact/hooks";
 
 function useInterval(callback: () => void, delay: number | null): void {
-    const savedCallback = useRef();
+    const savedCallback = useRef<Function>();
 
     // Remember the latest callback.
     useEffect(() => {
