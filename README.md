@@ -22,4 +22,6 @@
 
 [Launch the app](https://werktimer.netlify.app/)
 
+<img alt="Werk mockup" src="https://cdn.hashnode.com/res/hashnode/image/upload/v1609584809149/HN66AHWUu.png" />
+
 <img alt="" src="https://sohaibalam67-github.herokuapp.com/readme/github?id=werk_pomodoro_timer" />
