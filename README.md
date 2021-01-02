@@ -15,9 +15,9 @@
 
 
 ## Features
-- 25-5 (25 min work, 5 min rest) preset
-- start/pause anytime
-- reset the current session (work/break)
+- 25-5 (25 mins work, 5 mins rest) preset.
+- Start/pause anytime.
+- Reset the current session (work/break).
 - Really lightweight. Install as PWA.
 
 [Launch the app](https://werktimer.netlify.app/)
