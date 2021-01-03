@@ -113,7 +113,7 @@ const Home: FunctionalComponent = () => {
                             ? state.sessionDuration
                             : state.breakDuration,
                     currentTimerState: TimerStates.IDLE
-                }
+                };
 
             default:
                 return { ...state };

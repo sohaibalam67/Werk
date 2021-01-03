@@ -51,7 +51,7 @@ const Timer: FunctionalComponent<{
                     stroke-linecap="round"
                 />
             </svg>
-            <span class={style.time}>
+            <span id="time" class={style.time}>
                 {secondsToClock(currentCountdownTime)}
             </span>
         </div>
